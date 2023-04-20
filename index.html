@@ -72,17 +72,38 @@
         </div>
       </section>
       
-      <button id="copy-2">Copiar senha</button>
+      <div class="submit">
+        <button id="copy-2">Copiar senha</button>
+      </div>
     </main>
 
     <script>
 
       const inputEl = document.querySelector("#password")
+      const uppercaseCheckEl = document.querySelector("uppercase-check")
+      const numberCheckEl = document.querySelector("number-check")
+      const symbolCheckEl = document.querySelector("symbol-check")
 
       let passwordLength = 16
 
       function generatePassword() {
-        const chars = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789?!@#$%&*(){}[]"
+        let chars = "abcdefghjkmnpqrstuvwxyz"
+
+        const uppercaseChars = "ABCDEFGHJKLMNPQRSTUVWXYZ"
+        const numberChars = "123456789"
+        const symbolChars = "?!@#$%&*(){}[]"
+
+        // if (uppercaseCheckEl.checked) {
+        //   chars += uppercaseChars
+        // }
+
+        // if (numberCheckEl.checked) {
+        //   chars += numberChars
+        // }
+
+        // if (symbolCheckEl.checked) {
+        //   chars += symbolChars
+        // }
 
         let password = ""
 
@@ -103,6 +124,9 @@
         passwordLength = passwordLengthEl.value
         generatePassword()
       })
+      // uppercaseCheckEl.addEventListener("click", generatePassword)
+      // numberCheckEl.addEventListener("click", generatePassword)
+      // symbolCheckEl.addEventListener("click", generatePassword)
 
       document.querySelector("#copy-1").addEventListener("click", copy) // adicionando evento de copiar no botão copy
       document.querySelector("#copy-2").addEventListener("click", copy)
