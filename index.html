@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="security-indicator">
-          <div id="security-indicator-bar" class="bar" style="width: 90%"></div>
+          <div id="security-indicator-bar" class="bar"></div>
         </div>
       </section>
       
@@ -41,7 +41,7 @@
         <h3 class="title">Personalizar</h3>
         <div class="actions">
           <div class="password-length">
-            <p>Tamanho: <span class="password-length-text">16</span></p>
+            <p>Tamanho: <span id="password-length-text">16</span></p>
             <input 
             type="range" 
             name="password-length" 
@@ -65,7 +65,7 @@
             </label>
             <label class="checkbox-container">
               <span class="text">Símbolos</span>
-              <input type="checkbox" class="symbol-check" checked /> 
+              <input type="checkbox" id="symbol-check" checked /> 
               <span class="checkmark"></span>
             </label>
           </div>
@@ -80,9 +80,10 @@
     <script>
 
       const inputEl = document.querySelector("#password")
-      const uppercaseCheckEl = document.querySelector("uppercase-check")
-      const numberCheckEl = document.querySelector("number-check")
-      const symbolCheckEl = document.querySelector("symbol-check")
+      const uppercaseCheckEl = document.getElementById("uppercase-check")
+      const numberCheckEl = document.getElementById("number-check")
+      const symbolCheckEl = document.getElementById("symbol-check")
+      const securityIndicatorBarEl = document.getElementById("security-indicator-bar")
 
       let passwordLength = 16
 
@@ -93,17 +94,17 @@
         const numberChars = "123456789"
         const symbolChars = "?!@#$%&*(){}[]"
 
-        // if (uppercaseCheckEl.checked) {
-        //   chars += uppercaseChars
-        // }
+        if (uppercaseCheckEl.checked) {
+          chars += uppercaseChars
+        }
 
-        // if (numberCheckEl.checked) {
-        //   chars += numberChars
-        // }
+        if (numberCheckEl.checked) {
+          chars += numberChars
+        }
 
-        // if (symbolCheckEl.checked) {
-        //   chars += symbolChars
-        // }
+        if (symbolCheckEl.checked) {
+          chars += symbolChars
+        }
 
         let password = ""
 
@@ -113,6 +114,41 @@
         }
 
         inputEl.value = password
+        calculateQuality()
+      }
+
+      function calculateQuality() {
+
+        const percent = Math.round(
+          (passwordLength / 64) * 35 + 
+          (uppercaseCheckEl.checked ? 20 : 0) + 
+          (numberCheckEl.checked ? 10 : 0) +
+          (symbolCheckEl.checked ? 35 : 0)
+        )
+
+        securityIndicatorBarEl.style.width = `${percent}%`
+
+        if (percent > 69) {
+          //safe
+          securityIndicatorBarEl.classList.remove("critical")
+          securityIndicatorBarEl.classList.remove("warning")
+          securityIndicatorBarEl.classList.add("safe")
+        } else if (percent > 40) {
+          //warning
+          securityIndicatorBarEl.classList.remove("critical")
+          securityIndicatorBarEl.classList.remove("safe")
+          securityIndicatorBarEl.classList.add("warning")
+        } else {
+          securityIndicatorBarEl.classList.remove("safe")
+          securityIndicatorBarEl.classList.remove("warning")
+          securityIndicatorBarEl.classList.add("critical")
+        }
+
+        if (percent >= 100) {
+          securityIndicatorBarEl.classList.add("completed")
+        } else {
+          securityIndicatorBarEl.classList.remove("completed")
+        }
       }
 
       function copy() {
@@ -122,11 +158,12 @@
       const passwordLengthEl = document.querySelector("#password-length") // ajustando o evento da barra para ajustar a quantidade de caractere
       passwordLengthEl.addEventListener("input", function() {
         passwordLength = passwordLengthEl.value
+        document.querySelector("#password-length-text").innerText = passwordLength
         generatePassword()
       })
-      // uppercaseCheckEl.addEventListener("click", generatePassword)
-      // numberCheckEl.addEventListener("click", generatePassword)
-      // symbolCheckEl.addEventListener("click", generatePassword)
+      uppercaseCheckEl.addEventListener("click", generatePassword)
+      numberCheckEl.addEventListener("click", generatePassword)
+      symbolCheckEl.addEventListener("click", generatePassword)
 
       document.querySelector("#copy-1").addEventListener("click", copy) // adicionando evento de copiar no botão copy
       document.querySelector("#copy-2").addEventListener("click", copy)
