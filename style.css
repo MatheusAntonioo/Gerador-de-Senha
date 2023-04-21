@@ -19,7 +19,7 @@ main {
   background-color: #bb6bd9;
   border-radius: 8px;
   color: #fff;
-  animation: slideIn 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  /* animation: slideIn 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; */
 }
 
 /* @keyframes slideIn {
