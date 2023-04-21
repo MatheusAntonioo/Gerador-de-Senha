@@ -115,6 +115,7 @@
 
         inputEl.value = password
         calculateQuality()
+        calculateFontSize()
       }
 
       function calculateQuality() {
@@ -151,8 +152,32 @@
         }
       }
 
+      function calculateFontSize() {
+        if(passwordLength > 45) {
+          inputEl.classList.remove("font-sm")
+          inputEl.classList.remove("font-xs")
+          inputEl.classList.add("font-xxs")
+        } else if(passwordLength > 32) {
+          inputEl.classList.remove("font-sm")
+          inputEl.classList.remove("font-xxs")
+          inputEl.classList.add("font-xs")
+        } else if(passwordLength > 22) {
+          inputEl.classList.remove("font-xs")
+          inputEl.classList.remove("font-xxs")
+          inputEl.classList.add("font-sm")
+        } else {
+          inputEl.classList.remove("font-sm")
+          inputEl.classList.remove("font-xs")
+          inputEl.classList.remove("font-xxs")
+        }
+      }
+
       function copy() {
         navigator.clipboard.writeText(inputEl.value)
+      }
+
+      function renew() {
+        generatePassword()
       }
 
       const passwordLengthEl = document.querySelector("#password-length") // ajustando o evento da barra para ajustar a quantidade de caractere
@@ -167,6 +192,7 @@
 
       document.querySelector("#copy-1").addEventListener("click", copy) // adicionando evento de copiar no botão copy
       document.querySelector("#copy-2").addEventListener("click", copy)
+      document.querySelector("#renew").addEventListener("click", renew)
       
       generatePassword()
 
