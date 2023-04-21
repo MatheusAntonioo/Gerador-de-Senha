@@ -12,6 +12,7 @@
     <title>Gerador de Senha</title>
   </head>
   <body>
+    <div class="alert"></div>
     <main>
       <section class="hero">
         <h1 class="title">Gerador de Senha</h1>
@@ -84,6 +85,8 @@
       const numberCheckEl = document.getElementById("number-check")
       const symbolCheckEl = document.getElementById("symbol-check")
       const securityIndicatorBarEl = document.getElementById("security-indicator-bar")
+      const divMessage = document.querySelector(".alert")
+      const msg = "Senha Copiada"
 
       let passwordLength = 16
 
@@ -172,9 +175,16 @@
         }
       }
 
-      function copy() {
+      function copy(msg) {
         navigator.clipboard.writeText(inputEl.value)
-        alert("Senha Copiada")
+        const message = document.createElement("div")
+        message.classList.add("message")
+        message.innerText = msg
+        divMessage.appendChild(message)
+
+        setTimeout(() => {
+          message.style.display = "none"
+        },1500)
       }
 
       function renew() {
@@ -191,8 +201,12 @@
       numberCheckEl.addEventListener("click", generatePassword)
       symbolCheckEl.addEventListener("click", generatePassword)
 
-      document.querySelector("#copy-1").addEventListener("click", copy) // adicionando evento de copiar no botão copy
-      document.querySelector("#copy-2").addEventListener("click", copy)
+      document.querySelector("#copy-1").addEventListener("click",() => {
+        copy(msg)
+      }) // adicionando evento de copiar no botão copy
+      document.querySelector("#copy-2").addEventListener("click", () => {
+        copy(msg)
+      })
       document.querySelector("#renew").addEventListener("click", renew)
       
       generatePassword()
